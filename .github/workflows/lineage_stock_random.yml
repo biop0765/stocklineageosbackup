@@ -1,0 +1,56 @@
+name: lineage stock random
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+
+# push:
+#   branches: [ master ]
+  schedule:
+    - cron: '30 09 * * *'
+    
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.19
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.19
+      id: go
+
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Installing github-release
+      run: |
+        go install github.com/github-release/github-release@latest > /dev/null 2>&1
+
+    - name: Change PAT and running script
+      env:
+        MY_PAT: ${{ secrets.MY_PAT }}
+      run: |
+        find . -iname "download_upload"
+        readlink -f download_upload
+        sed -i "s/github_pat_CHANGEME/$MY_PAT/g" download_upload
+        sudo apt-get install -y rename > /dev/null 2>&1
+        chmod +x download_upload
+        echo "Running script now ............"
+        ./download_upload
+        #ls -al _release/bin
