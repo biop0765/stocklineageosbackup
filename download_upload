@@ -1,0 +1,38 @@
+#!/bin/bash
+
+export GITHUB_TOKEN=github_pat_CHANGEME
+touch ~/.bashrc.local
+. ~/.bashrc.local
+
+#sudo apt-get install -y rename > /dev/null 2>&1
+#go install github.com/github-release/github-release@latest > /dev/null 2>&1
+rm -f index.html*
+
+myArray=("sailfish" "walleye" "taimen" "blueline" "crosshatch" "sargo" "bonito" "flame" "coral" "sunfish" "bramble" "redfin" "barbet" "oriole" "raven" "bluejay" "panther" "cheetah" "lynx" "marlin")
+RANDOM_DEVICE=${myArray[ $RANDOM % ${#myArray[@]} ]}
+echo $RANDOM_DEVICE
+
+github-release release \
+    --user biop0765 \
+    --repo stocklineageosbackup \
+    --tag $RANDOM_DEVICE
+
+curl -sSL \
+    https://download.lineageos.org/api/v1/$RANDOM_DEVICE/nightly/eng.root.20221023.162209 \
+    -o device.json
+LOS_ZIP_URL=$(cat device.json | jq -r '.response[0].url')
+echo $LOS_ZIP_URL
+LOS_ZIP_FILENAME=$(cat device.json | jq -r '.response[0].filename')
+echo $LOS_ZIP_FILENAME
+curl -sSL --progress-bar $LOS_ZIP_URL -o $LOS_ZIP_FILENAME
+
+for i in `find . -type f \( -iname lineage\*m -o -iname lineage\*.zip -o -iname lineage\*img \) -printf '%f\n'`
+do
+echo $i
+github-release upload -R --user biop0765 \
+   --repo stocklineageosbackup \
+   --tag $RANDOM_DEVICE \
+   --file $i --name $i
+rm -fr $i
+
+done
