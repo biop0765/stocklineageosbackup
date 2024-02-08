@@ -28,11 +28,10 @@ curl -sSL --progress-bar $LOS_ZIP_URL -o $LOS_ZIP_FILENAME
 
 for i in `find . -type f \( -iname lineage\*m -o -iname lineage\*.zip -o -iname lineage\*img \) -printf '%f\n'`
 do
-echo $i
+#echo $i
 github-release upload -R --user biop0765 \
    --repo stocklineageosbackup \
    --tag $RANDOM_DEVICE \
    --file $i --name $i
 rm -fr $i
-
 done
