@@ -21,9 +21,10 @@ curl -sSL \
     https://download.lineageos.org/api/v1/$RANDOM_DEVICE/nightly/eng.root.20221023.162209 \
     -o device.json
 LOS_ZIP_URL=$(cat device.json | jq -r '.response[0].url')
-echo $LOS_ZIP_URL
 LOS_ZIP_FILENAME=$(cat device.json | jq -r '.response[0].filename')
 echo $LOS_ZIP_FILENAME
+echo $LOS_ZIP_URL
+
 curl -sSL --progress-bar $LOS_ZIP_URL -o $LOS_ZIP_FILENAME
 
 for i in `find . -type f \( -iname lineage\*m -o -iname lineage\*.zip -o -iname lineage\*img \) -printf '%f\n'`
