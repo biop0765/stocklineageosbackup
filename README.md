@@ -1,1 +1,1 @@
-## This is backup for lineageos
+## This is backup for lineageos stock
