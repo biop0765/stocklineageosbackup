@@ -8,7 +8,7 @@ touch ~/.bashrc.local
 #go install github.com/github-release/github-release@latest > /dev/null 2>&1
 rm -f index.html*
 
-myArray=("berlin" "pstar" "sailfish" "walleye" "taimen" "blueline" "crosshatch" "sargo" "bonito" "coral" "flame" "sunfish" "bramble" "redfin" "barbet" "oriole" "raven" "bluejay" "panther" "cheetah" "lynx" "marlin")
+myArray=("radxa0" "berlin" "pstar" "sailfish" "walleye" "taimen" "blueline" "crosshatch" "sargo" "bonito" "coral" "flame" "sunfish" "bramble" "redfin" "barbet" "oriole" "raven" "bluejay" "panther" "cheetah" "lynx" "marlin")
 RANDOM_DEVICE=${myArray[ $RANDOM % ${#myArray[@]} ]}
 echo $RANDOM_DEVICE
 
